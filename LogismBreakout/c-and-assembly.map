@@ -1,0 +1,165 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+rom              0x0000000000400000 0x0000000000010000 xrl
+ram              0x0000000010010000 0x0000000000010000 w !l
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+
+.init           0x0000000000400000       0x1c
+ *(.init)
+ .init          0x0000000000400000       0x1c crt0.o
+                0x0000000000400000                _start
+
+.text           0x000000000040001c      0x598
+ *(.text)
+ .text          0x000000000040001c        0x0 crt0.o
+ .text          0x000000000040001c      0x158 main.o
+                0x000000000040001c                main
+ .text          0x0000000000400174      0x1ac lib.o
+                0x0000000000400174                abs
+                0x0000000000400184                printchar
+                0x0000000000400190                println
+                0x00000000004001a0                printstr
+                0x00000000004001c0                printint
+                0x000000000040023c                pollkbd
+                0x000000000040024c                readchar
+                0x000000000040025c                readstr
+                0x00000000004002b4                readint
+ .text          0x0000000000400320       0x24 showpic.o
+                0x0000000000400320                showpic
+ .text          0x0000000000400344      0x264 pictures.o
+                0x0000000000400344                isBrickAt
+                0x0000000000400364                updateBall
+                0x0000000000400518                updatePaddle
+                0x0000000000400574                displayScore
+ .text          0x00000000004005a8        0xc initBrickLayer.o
+                0x00000000004005a8                initBrickLayer
+
+.rodata.str1.4  0x00000000004005b4       0x86
+ .rodata.str1.4
+                0x00000000004005b4       0x86 main.o
+
+.rodata         0x000000000040063c       0x28
+ .rodata        0x000000000040063c       0x28 main.o
+
+.rela.dyn       0x0000000000400664        0x0
+ .rela.init     0x0000000000400664        0x0 crt0.o
+
+.data           0x0000000000400664       0x80
+ .data          0x0000000000400664        0x0 crt0.o
+ .data          0x0000000000400664        0x0 main.o
+ .data          0x0000000000400664        0x0 lib.o
+ .data          0x0000000000400664        0x0 showpic.o
+ .data          0x0000000000400664       0x80 pictures.o
+                0x0000000000400664                picture
+ .data          0x00000000004006e4        0x0 initBrickLayer.o
+
+.srodata
+ *(.srodata)
+
+.bss            0x0000000010010000        0x0
+ *(.bss)
+ .bss           0x0000000010010000        0x0 crt0.o
+ .bss           0x0000000010010000        0x0 main.o
+ .bss           0x0000000010010000        0x0 lib.o
+ .bss           0x0000000010010000        0x0 showpic.o
+ .bss           0x0000000010010000        0x0 pictures.o
+ .bss           0x0000000010010000        0x0 initBrickLayer.o
+ *(COMMON)
+                0x000000001001fffc                PROVIDE (__stack_init = ((ORIGIN (ram) + LENGTH (ram)) - 0x4))
+LOAD crt0.o
+LOAD main.o
+LOAD lib.o
+LOAD showpic.o
+LOAD pictures.o
+LOAD initBrickLayer.o
+OUTPUT(c-and-assembly elf32-littleriscv)
+
+.riscv.attributes
+                0x0000000000000000       0x21
+ .riscv.attributes
+                0x0000000000000000       0x1f crt0.o
+ .riscv.attributes
+                0x000000000000001f       0x21 main.o
+ .riscv.attributes
+                0x0000000000000040       0x21 lib.o
+ .riscv.attributes
+                0x0000000000000061       0x1f showpic.o
+ .riscv.attributes
+                0x0000000000000080       0x21 pictures.o
+ .riscv.attributes
+                0x00000000000000a1       0x1f initBrickLayer.o
+
+.comment        0x0000000000000000        0xf
+ .comment       0x0000000000000000        0xf main.o
+                                         0x10 (size before relaxing)
+ .comment       0x000000000000000f       0x10 lib.o
+ .comment       0x000000000000000f       0x10 pictures.o
+
+.debug_line     0x0000000000000000      0xbe3
+ .debug_line    0x0000000000000000       0x55 crt0.o
+ .debug_line    0x0000000000000055      0x1bb main.o
+ .debug_line    0x0000000000000210      0x4ea lib.o
+ .debug_line    0x00000000000006fa       0x6a showpic.o
+ .debug_line    0x0000000000000764      0x434 pictures.o
+ .debug_line    0x0000000000000b98       0x4b initBrickLayer.o
+
+.debug_info     0x0000000000000000      0x824
+ .debug_info    0x0000000000000000       0x26 crt0.o
+ .debug_info    0x0000000000000026      0x2b5 main.o
+ .debug_info    0x00000000000002db      0x2b7 lib.o
+ .debug_info    0x0000000000000592       0x26 showpic.o
+ .debug_info    0x00000000000005b8      0x246 pictures.o
+ .debug_info    0x00000000000007fe       0x26 initBrickLayer.o
+
+.debug_abbrev   0x0000000000000000      0x424
+ .debug_abbrev  0x0000000000000000       0x14 crt0.o
+ .debug_abbrev  0x0000000000000014       0xd3 main.o
+ .debug_abbrev  0x00000000000000e7      0x1fb lib.o
+ .debug_abbrev  0x00000000000002e2       0x14 showpic.o
+ .debug_abbrev  0x00000000000002f6      0x11a pictures.o
+ .debug_abbrev  0x0000000000000410       0x14 initBrickLayer.o
+
+.debug_aranges  0x0000000000000000       0xc0
+ .debug_aranges
+                0x0000000000000000       0x20 crt0.o
+ .debug_aranges
+                0x0000000000000020       0x20 main.o
+ .debug_aranges
+                0x0000000000000040       0x20 lib.o
+ .debug_aranges
+                0x0000000000000060       0x20 showpic.o
+ .debug_aranges
+                0x0000000000000080       0x20 pictures.o
+ .debug_aranges
+                0x00000000000000a0       0x20 initBrickLayer.o
+
+.debug_str      0x0000000000000000      0x1d0
+ .debug_str     0x0000000000000000       0x43 crt0.o
+ .debug_str     0x0000000000000043      0x108 main.o
+                                        0x136 (size before relaxing)
+ .debug_str     0x000000000000014b       0x38 lib.o
+                                         0xda (size before relaxing)
+ .debug_str     0x0000000000000183        0xa showpic.o
+                                         0x46 (size before relaxing)
+ .debug_str     0x000000000000018d       0x32 pictures.o
+                                        0x12a (size before relaxing)
+ .debug_str     0x00000000000001bf       0x11 initBrickLayer.o
+                                         0x4d (size before relaxing)
+
+.debug_frame    0x0000000000000000      0x150
+ .debug_frame   0x0000000000000000       0x34 main.o
+ .debug_frame   0x0000000000000034       0xa8 lib.o
+ .debug_frame   0x00000000000000dc       0x74 pictures.o
+
+.debug_loc      0x0000000000000000      0x494
+ .debug_loc     0x0000000000000000      0x1ea lib.o
+ .debug_loc     0x00000000000001ea      0x2aa pictures.o
+
+.debug_ranges   0x0000000000000000       0x78
+ .debug_ranges  0x0000000000000000       0x60 lib.o
+ .debug_ranges  0x0000000000000060       0x18 pictures.o
